@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐱🐶 猫狗分类器</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="app-header">
+    <div class="logo">🐱🐶</div>
+    <div class="header-text">
+      <h1>猫狗图像分类</h1>
+      <p>基于 PyTorch 迁移学习 + OpenCV 预处理 · ResNet18</p>
+    </div>
+    <div id="model-status" class="status-badge loading">检测模型…</div>
+  </header>
+
+  <main class="container">
+    <!-- 左侧：输入区域 -->
+    <section class="card input-card">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="upload">上传图片</button>
+        <button class="tab-btn" data-tab="camera">摄像头拍照</button>
+      </div>
+
+      <!-- 上传 tab -->
+      <div id="tab-upload" class="tab-panel active">
+        <div id="dropzone" class="dropzone">
+          <div class="dz-icon">📷</div>
+          <p class="dz-title">拖拽图片到这里，或点击选择</p>
+          <p class="dz-hint">支持 JPG / PNG，猫狗均可</p>
+          <input type="file" id="file-input" accept="image/*" hidden />
+        </div>
+      </div>
+
+      <!-- 摄像头 tab -->
+      <div id="tab-camera" class="tab-panel">
+        <div class="camera-wrap">
+          <video id="camera-video" autoplay playsinline></video>
+          <canvas id="camera-canvas" hidden></canvas>
+          <div class="camera-cover">
+            <span class="camera-icon">📹</span>
+            <p>点击下方按钮开启摄像头</p>
+          </div>
+        </div>
+        <div class="camera-btns">
+          <button id="camera-start" class="btn btn-secondary">开启摄像头</button>
+          <button id="camera-capture" class="btn btn-primary" disabled>📸 拍照识别</button>
+          <button id="camera-close" class="btn btn-ghost" hidden>关闭</button>
+        </div>
+      </div>
+
+      <!-- 预览 -->
+      <div id="preview-box" class="preview-box" hidden>
+        <img id="preview-img" alt="待识别图片" />
+        <button id="preview-clear" class="preview-clear" title="清除">✕</button>
+      </div>
+
+      <div class="input-actions">
+        <button id="btn-predict" class="btn btn-primary btn-lg" disabled>
+          🔍 开始识别
+        </button>
+      </div>
+    </section>
+
+    <!-- 右侧：结果区域 -->
+    <section class="card result-card">
+      <h2 class="card-title">识别结果</h2>
+
+      <div id="result-empty" class="result-empty">
+        <div class="empty-icon">🔎</div>
+        <p>上传或拍摄一张猫 / 狗图片</p>
+        <p class="empty-sub">预测结果与置信度将显示在这里</p>
+      </div>
+
+      <div id="result-box" class="result-box" hidden>
+        <div class="result-main">
+          <div class="result-emoji" id="result-emoji">🐱</div>
+          <div class="result-info">
+            <div class="result-label" id="result-label">猫</div>
+            <div class="result-conf">置信度 <span id="result-conf">0.00%</span></div>
+          </div>
+        </div>
+
+        <div class="prob-bars">
+          <div class="prob-row">
+            <span class="prob-name">🐱 猫</span>
+            <div class="prob-track"><div class="prob-fill cat" id="prob-fill-cat"></div></div>
+            <span class="prob-val" id="prob-val-cat">0%</span>
+          </div>
+          <div class="prob-row">
+            <span class="prob-name">🐶 狗</span>
+            <div class="prob-track"><div class="prob-fill dog" id="prob-fill-dog"></div></div>
+            <span class="prob-val" id="prob-val-dog">0%</span>
+          </div>
+        </div>
+
+        <div class="result-meta">
+          <span id="result-time"></span>
+        </div>
+      </div>
+
+      <div id="result-error" class="result-error" hidden></div>
+
+      <div id="loading" class="loading" hidden>
+        <div class="spinner"></div>
+        <span>模型推理中…</span>
+      </div>
+
+      <!-- 历史记录 -->
+      <div class="history">
+        <h3 class="history-title">最近识别</h3>
+        <ul id="history-list" class="history-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    猫狗分类实验 · 手动搭建 AlexNet → 迁移学习 → 数据增强 → 多模型对比 → 部署上线
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

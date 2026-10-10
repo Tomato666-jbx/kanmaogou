@@ -1,0 +1,25 @@
+﻿# 虚拟环境
+.venv/
+venv/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+
+# 数据集（图片较大，不入仓库）
+datasets/*.jpg
+datasets/*.jpeg
+datasets/*.png
+
+# 训练产出的模型权重
+backend/best_model.pth
+backend/model_*.pth
+
+# 其他
+.DS_Store
+*.log
